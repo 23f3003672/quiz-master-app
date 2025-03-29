@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Subject- Quiz Master{% endblock %}
+
+{% block content %}
+    <h2>Edit Quiz</h2>
+    <form method="POST">
+        <label for="title">Quiz Name:</label>
+        <input type="text" name="title" value="{{ quiz.title }}" required>
+
+        <label for="chapter">Select Chapter:</label>
+        <select name="chapter_id">
+            {% for chapter in chapters %}
+                <option value="{{ chapter.id }}" {% if quiz.chapter_id==chapter.id %} selected {% endif %}>
+                    {{ chapter.name }}
+                </option>
+                {% endfor %}
+        </select>
+
+        <button type="submit">Update Quiz</button>
+    </form>
+    <span style="margin-right: 20;">
+        <a href="{{ url_for('manage_quizzes',chapter_id=quiz.chapter_id) }}">Back to Manage Quizzes</a>
+    </span>
+   
+
+    <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+
+{% endblock %}    

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Take Quiz - Quiz Master{% endblock%}
+
+{% block content %}
+
+    <h2>Take the Quiz For {{ quiz.title }}</h2>
+
+    {% if questions %}
+    <form method="POST">
+        {% for question in questions %}
+        <p><strong>{{ question.text }}</strong></p>
+        <label>
+            <input type="radio" name="{{ question.id }}" value="A">{{ question.option_a }}<br>
+        </label>
+        <label>
+            <input type="radio" name="{{ question.id }}" value="B">{{ question.option_b }}<br>
+        </label>
+
+        <label>
+            <input type="radio" name="{{ question.id }}" value="C">{{ question.option_c }}<br>
+        </label>
+       
+        <label>
+            <input type="radio" name="{{ question.id }}" value="D">{{ question.option_d }}<br>
+        </label>
+       
+        {% endfor %}
+        <button type="submit">Submit your Quiz</button>
+    </form>
+    {% else %}
+    <p>No question available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    {% endblock %}

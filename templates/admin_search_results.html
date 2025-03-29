@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Admin Search Results-Quiz Master{% endblock %}
+
+{% block content %}
+<h2>Search Results for "{{ query }} in {{ filter_by }}"</h2>
+
+{% if results %}
+<ul>
+    {% for result in results %}
+        <li>{{ result.full_name if filter_by=="users" else result.name if filter_by=="subjects" else result.title if filter_by=="quizzes" else result.text }}</li>
+
+    {% endfor %}
+
+
+</ul>
+
+{% else %}
+<p>No results found.</p>
+{% endif %}
+
+<a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+
+{% endblock %}

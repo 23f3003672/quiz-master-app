@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}User Search Results-Quiz Master{% endblock %}
+
+{% block content %}
+<h2>Search Results for "{{ query }} in {{ filter_by }}"</h2>
+
+{% if results %}
+<ul>
+    {% for result in results %}
+        <li>{{ result.name if filter_by=="subjects" else result.title }}</li>
+
+    {% endfor %}
+
+
+</ul>
+
+{% else %}
+<p>No results found.</p>
+{% endif %}
+
+<a href="{{ url_for('dashboard') }}">Back To Dashboard</a>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Available Quizzes - Quiz Master{% endblock %}
+
+{% block content %}
+    <h2>Available Quizzes in {{ chapter.name }}</h2>
+    {% if quizzes %}
+    <ul>
+        {% for quiz in quizzes %}
+        <li><a href="{{ url_for('take_quiz',quiz_id=quiz.id) }}">{{ quiz.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No quizzes available at the moment.</p>
+    {% endif %}
+   
+
+    <span style="margin-right: 20px;"> 
+        <a href="{{ url_for('view_chapters',subject_id=subject.id) }}">Back to Chapters</a>
+    </span>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        
+    {% endblock %}

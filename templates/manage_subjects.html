@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Manage Subjects-Quiz Master{% endblock %}
+
+{% block content %}
+    <h2>Manage Subjects</h2>
+
+    <form method="POST" action="{{ url_for('manage_subjects') }}">
+        <label for="name">Subject Name:</label>
+        <input type="text" name="name" id="name" placeholder="Enter Subject Name" required>
+        <button type="submit">Add Subject</button>
+    </form>
+
+    <h3>Existing Subjects</h3>
+    {% if subjects %}
+    <ul>
+        {% for subject in subjects %}
+            <li>
+                <strong>{{ subject.name }}</strong>
+                <a href="{{ url_for('edit_subject',subject_id=subject.id) }}">Edit</a>
+                
+            <form method="POST" action="{{ url_for('delete_subject',subject_id=subject.id )}}" style="display:inline;">
+                <button type="submit">Delete Subject</button>
+            </form>
+
+            <br>
+            <a href="{{ url_for('manage_chapters',subject_id=subject.id) }}">Manage Chapters</a>
+
+            {% if subject.chapters %}
+            <ul>
+                {% for chapter in subject.chapters %}
+                <li>
+                    {{ chapter.name }}
+                    <a href="{{ url_for('edit_chapter',chapter_id=chapter.id)}}">Edit Chapter</a>
+
+                    <form method="POST" action="{{ url_for('delete_chapter',chapter_id=chapter.id) }}" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+
+                    <br>
+                    <a href="{{ url_for('manage_quizzes',chapter_id=chapter.id) }}">Manage Quizzes</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No chapters available.</p>
+            {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% else %}
+            <p>No Subjects Available.</p>
+            {% endif %}
+    
+     <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+    {% endblock %}

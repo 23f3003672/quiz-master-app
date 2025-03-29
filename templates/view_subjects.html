@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Subjects - Quiz Master{% endblock %}
+
+{% block content %}
+    <h2>Subjects</h2>
+    {% if subjects %}
+    <ul>
+        {% for subject in subjects %}
+            <li><a href="{{ url_for('view_chapters', subject_id=subject.id)}}">{{ subject.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No subjects available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    {% endblock %}

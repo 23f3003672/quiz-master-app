@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Quiz Scores -Quiz Master{% endblock %}
+
+{% block content %}
+    <h2>Your Quiz Scores</h2>
+
+    {% if scores %}
+    <ul>
+        {% for score in scores %}
+        <li>Quiz {{ score.quiz_id }}- Score: {{ score.score }} marks </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>you haven't taken any quizzes yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    {% endblock %}

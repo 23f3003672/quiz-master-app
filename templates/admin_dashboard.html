@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard -Quiz Master{% endblock %}
+
+{% block content %}
+    <h1>Welcome, Admin!</h1>
+
+    <form method="GET" action="{{ url_for('admin_search') }}" class="search-form">
+        <input type="text" name="query" placeholder="Search..." class="search-box" required>
+        <select name="filter" class="search-filter">
+            <option value="users">Users</option>
+            <option value="subjects">Subject</option>
+            <option value="quizzes">Quizzes</option>
+            <option value="questions">Question</option>
+        </select>
+            <button type="submit" class="search-button">Search</button>
+       
+    </form>
+
+    <h2>Manage Users:</h2>
+    <ul>
+        {% for user in users %}
+        <li>
+            {{ user.full_name }} ({{ user.email }}) 
+            <a href="{{ url_for('delete_user', user_id=user.id) }}">Delete</a>
+        </li>
+        {% else %}
+        <li>No users available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Manage Subjects:</h2>
+    <form action="{{ url_for('manage_subjects') }}" method="POST">  
+        <button type="submit">Add Subject</button>
+    </form>
+    <ul>
+        {% for subject in subjects %}
+        <li>
+            {{ subject.name }}
+
+            <a href="{{ url_for('edit_subject', subject_id=subject.id) }}">Edit</a>
+
+            <form action="{{ url_for('delete_subject',subject_id=subject.id) }}" method="POST" style="display:inline;">
+                <button type="submit">Delete Subject</button>
+            </form>  
+        </li>
+        {% else %}
+        <li>No subjects available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Manage Chapters:</h2>
+    <form action="{{ url_for('manage_chapters') }}" method="POST">
+        <button type="submit">Add Chapter</button>
+    </form>
+    <ul>
+        {% for chapter in chapters %}
+        <li>
+            {{ chapter.name }} (Subject: {{ chapter.subject.name }})
+
+            <a href="{{ url_for('edit_chapter',chapter_id=chapter.id) }}">Edit</a>
+
+            <form action="{{ url_for('delete_chapter',chapter_id=chapter.id) }}" method="POST" style="display:inline;">
+                <button type="submit">Delete Chapter</button>
+            </form>   
+        </li>
+        {% else %}
+        <li>No chapters available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Available Quizzes:</h2>
+   
+    <ul>
+        {% for quiz in quizzes %}
+
+        <li>
+            {{ quiz.title }} (Chapter: {{ quiz.chapter.name }})
+            <a href="{{ url_for('edit_quiz',quiz_id=quiz.id) }}">Edit</a>
+          <!--<a href="{{ url_for('delete_quiz',quiz_id=quiz.id) }}">Delete</a>-->  
+
+          <form action="{{ url_for('delete_quiz',quiz_id=quiz.id) }}" method="POST" style="display:inline;">
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+        {% else %}
+        <li>No quizzes available.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Manage Questions:</h2>
+
+    {% for subject in subjects %}
+        <h3>{{ subjects.name }}</h3>
+        {% for chapter in subject.chapters %}
+        <h4>{{ chapter.name }}</h4>
+
+            {% for quiz in chapter.quizzes %}
+            <h5>Quiz: {{ quiz.title }}</h5>
+            <ul>
+                {% for question in quiz.questions %}
+                <li>
+                    {{ question.text }}
+                    <a href="{{ url_for('edit_question',question_id=question.id) }}">Edit</a>
+
+                 <form action="{{ url_for('delete_question',question_id=question.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                  </form>
+                </li>
+                {% else %}
+                <li>No questions Available.</li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        {% endfor %}
+
+        {% else %}
+        <p>No subjects available.</p>
+        {% endfor %}
+
+
+
+
+
+    <h2>Quiz performance of Students:</h2>
+    <ul>
+        {% for score in scores %}
+        <li>User ID: {{ score.user_id }} - Quiz ID: {{ score.quiz_id }} - Score: {{ score.score }}</li>
+        {%else%}
+        <li>No quiz scores recorded yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+{% endblock %}

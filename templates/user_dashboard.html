@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}User dashboard - Quiz Master{% endblock %}
+
+{% block content %}
+    <h1>Welcome, {{ user.full_name }}!</h1>
+
+    <form method="GET" action="{{ url_for('user_search') }}" class="search-form">
+        <input type="text" name="query" placeholder="Search..." class="search-box" required>
+        <select name="filter" class="search-filter">
+            <option value="subjects">Subject</option>
+            <option value="quizzes">Quizzes</option>
+        </select>
+            <button type="submit" class="search-button">Search</button>
+        
+    </form>
+
+    <h2>Explore!</h2>
+    <ul>
+        <li><a href="{{ url_for('view_subjects') }}">View Subjects</a></li>
+
+        <li><a href="{{ url_for('view_scores') }}">View Your Scores</a></li>
+    </ul>
+
+    <h2>Your Past Scores:</h2>
+    {% if scores %}
+    <ul>
+        {% for score in scores %}
+        <li>Quiz ID: {{ score.quiz_id }} - Score:{{ score.score }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No past scores available.</p>
+    {% endif %}
+
+    <h2>Take a Quiz</h2>
+    {% if chapters %}
+    <ul>
+        {% for chapter in chapters %}
+        <li>
+            <strong>{{ chapter.name }}</strong>
+            <ul>
+                {% for quiz in chapter.quizzes %}
+                <li>
+                    {{ quiz.title }}
+                    <a href="{{ url_for('take_quiz',quiz_id=quiz.id) }}">Take Quiz</a>
+                </li>
+                {% else %}
+                <li>No quizzes available for this chapter.</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No quizzes available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% endblock %}
